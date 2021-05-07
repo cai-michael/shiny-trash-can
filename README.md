@@ -10,3 +10,5 @@ This game was my first independent programming project done during my freshman y
 My honors contract for CSE205: Object-Oriented Programming and Data Structures, It's the classic vertical four-in-a-row game.
 Our class had just started to work with GUI based projects, so I decided to make a game. The project is implemented in Java and uses the Java Swing toolkit for the GUI elements.
 
+## Tic-Tac-Toe
+I wanted to experiment using Rust so I made a simple Tic-Tac-Toe game.
