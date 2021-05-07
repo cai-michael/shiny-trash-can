@@ -99,8 +99,6 @@ impl Board {
                 .read_line(&mut user_input)
                 .expect("Failed to read line");
 
-            println!("{}", user_input);
-
             let user_option: usize = match user_input.trim().parse() {
                 Ok(num) => num,
                 Err(_) => {
