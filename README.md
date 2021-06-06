@@ -12,3 +12,6 @@ Our class had just started to work with GUI based projects, so I decided to make
 
 ## Tic-Tac-Toe
 I wanted to experiment using Rust so I made a simple Tic-Tac-Toe game.
+
+## Sudoku
+Some solutions to a few textbook problems regarding variants of Sudoku, they are all implemented in Clingo with examples.
