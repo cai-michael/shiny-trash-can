@@ -6,6 +6,8 @@ pub struct Board {
 }
 
 impl Board {
+    /// Creates a new 3x3 board.
+    ///
     pub fn new() -> Board {
         const DIM: usize = 3;
 
