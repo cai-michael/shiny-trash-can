@@ -9,15 +9,14 @@ import (
 func main() {
 	fmt.Println("Hello player! In this game you must guess a number between 1-100.")
 	fmt.Println("If your guess is correct you win! But if it isn't I'll tell you if it's higher or lower.")
-	fmt.Println("Be careful though, I will lie to you x% of the time where x is your current guess.")
+	fmt.Println("Be careful though, I will lie to you x% of the time where x is the answer.")
 
 	// Generate the answer
-	var answer int = rand.Intn(100)
+	var answer int = rand.Intn(100) + 1
 	var guesses int = 0
 	var guess int
 
 	for {
-		print(answer)
 		// Take user input
 		guess = get_player_input()
 		guesses++
@@ -25,8 +24,8 @@ func main() {
 		// Determine if user's guess is correct
 		if guess != answer {
 			var lie bool = false
-			random_chance := rand.Intn(100)
-			if random_chance <= guess {
+			random_chance := rand.Intn(100) + 1
+			if random_chance <= answer {
 				lie = true
 			}
 
