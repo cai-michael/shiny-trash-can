@@ -4,9 +4,36 @@ import (
 	"fmt"
 	"math/rand"
 	"strconv"
+
+	Solver "Lying-Number-Guess-Game/solver"
 )
 
 func main() {
+	fmt.Println("Hello! Please select a mode.")
+	fmt.Println("1: Normal Guessing Game")
+	fmt.Println("2: Compare Strategies in Simulation")
+	var menu_choice int = get_menu_input()
+	if menu_choice == 1 {
+		player_game()
+	}
+	if menu_choice == 2 {
+		compare_strategies_in_simulation()
+	}
+}
+
+func compare_strategies_in_simulation() {
+
+	// Generate the answer
+	var answer int = rand.Intn(100) + 1
+
+	// Run the simulation on different strategies
+	hundred_approximator_guesses := Solver.Hundred_approximator_strategy(answer)
+	// Print results
+
+	fmt.Printf("Hundred Approximator Strategy Solved in:\t%d!", hundred_approximator_guesses)
+}
+
+func player_game() {
 	fmt.Println("Hello player! In this game you must guess a number between 1-100.")
 	fmt.Println("If your guess is correct you win! But if it isn't I'll tell you if it's higher or lower.")
 	fmt.Println("Be careful though, I will lie to you x% of the time where x is the answer.")
@@ -18,7 +45,7 @@ func main() {
 
 	for {
 		// Take user input
-		guess = get_player_input()
+		guess = get_guess_input()
 		guesses++
 
 		// Determine if user's guess is correct
@@ -40,27 +67,43 @@ func main() {
 	fmt.Printf("Congragulations! You guessed the number in %d guesses!", guesses)
 }
 
-func get_player_input() int {
-	var guess int
+func get_guess_input() int {
+	for {
+		fmt.Println("Enter your guess:")
+		var choice int = get_player_input_integer()
+		if choice <= 2 && choice >= 1 {
+			return choice
+		} else {
+			fmt.Println("The menu option is not valid.")
+		}
 
+	}
+}
+
+func get_menu_input() int {
+	for {
+		fmt.Println("Enter your selection:")
+		var guess int = get_player_input_integer()
+		if guess <= 100 && guess >= 1 {
+			return guess
+		} else {
+			fmt.Println("The guessed number is not between 1 and 100")
+		}
+
+	}
+}
+
+func get_player_input_integer() int {
 	for {
 		var user_input string
-		fmt.Println("Enter your guess:")
 		fmt.Scanln(&user_input)
-
-		if guess_int, err := strconv.Atoi(user_input); err == nil {
-			if guess_int <= 100 && guess_int >= 1 {
-				guess = guess_int
-				break
-			} else {
-				fmt.Println("The guessed number is not between 1 and 100")
-			}
+		if input_as_int, err := strconv.Atoi(user_input); err == nil {
+			return input_as_int
 		} else {
 			fmt.Println("The input is not a valid number")
 		}
 	}
 
-	return guess
 }
 
 func give_player_hint(guess int, answer int, lie bool) {
