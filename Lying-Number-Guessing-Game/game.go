@@ -5,7 +5,7 @@ import (
 	"math/rand"
 	"strconv"
 
-	Solver "Lying-Number-Guess-Game/solver"
+	Solver "github.com/cai-michael/shiny-trash-can/Lying-Number-Guessing-Game/solver"
 )
 
 func main() {
@@ -17,20 +17,26 @@ func main() {
 		player_game()
 	}
 	if menu_choice == 2 {
-		compare_strategies_in_simulation()
+		compare_strategies_in_simulation(100)
 	}
 }
 
-func compare_strategies_in_simulation() {
+func compare_strategies_in_simulation(n int) {
+	hundred_approximator_guesses := make([]int, n)
+	hundred_approximator_total_guesses := 0
 
-	// Generate the answer
-	var answer int = rand.Intn(100) + 1
+	for i := 0; i < n; i++ {
+		// Generate the answer
+		var answer int = rand.Intn(100) + 1
 
-	// Run the simulation on different strategies
-	hundred_approximator_guesses := Solver.Hundred_approximator_strategy(answer)
+		// Run the simulation on different strategies
+		hundred_approximator_guesses[i] = Solver.Hundred_approximator_strategy(answer)
+		hundred_approximator_total_guesses += hundred_approximator_guesses[i]
+	}
+
 	// Print results
 
-	fmt.Printf("Hundred Approximator Strategy Solved in:\t%d!", hundred_approximator_guesses)
+	fmt.Printf("Hundred Approximator Strategy Average Guesses:\t%d!", hundred_approximator_total_guesses/n)
 }
 
 func player_game() {

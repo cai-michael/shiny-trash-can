@@ -13,7 +13,7 @@ const (
 )
 
 func Hundred_approximator_strategy(answer int) int {
-	guesses := make([]State, 10)
+	guesses := make([]State, 210)
 	num_guesses := 0
 
 	num_higher := 0
@@ -25,20 +25,19 @@ func Hundred_approximator_strategy(answer int) int {
 		num_guesses++
 	}
 
-	starting_point := num_higher * 10
+	current_guess := num_higher * 10
 	for i := 0; i < 200; i++ {
-
-		var current_guess int
 		if i%2 == 0 {
-			current_guess = starting_point + i
+			current_guess = current_guess + i
 		} else {
-			current_guess = starting_point - i
+			current_guess = current_guess - i
 		}
 
 		if current_guess <= 100 && current_guess > 0 {
-			guesses[i] = get_game_state(current_guess, answer)
+			game_state := get_game_state(current_guess, answer)
+			guesses[i+10] = game_state
 			num_guesses++
-			if guesses[i] == Correct {
+			if game_state == Correct {
 				break
 			}
 		}
@@ -60,11 +59,13 @@ func get_game_state(guess int, answer int) State {
 		} else {
 			return Higher
 		}
-	} else {
+	} else if answer > guess {
 		if !lie {
 			return Higher
 		} else {
 			return Lower
 		}
 	}
+
+	return Correct
 }
