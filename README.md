@@ -1,6 +1,6 @@
 # shiny-trash-can
 
-This repository is a variety of projects I've worked on with no real connection
+This repository is a variety of projects I've worked on with no real connection. I mainly use this repository to experiment with and learn new programming languages.
 
 ## Lying-Number-Guessing-Game
 A friend gave me an idea for a guessing game that would occasionally lie to you, he said he had an idea for a solver but it turns out he lied. So I made a really basic naive implementation of one too.
