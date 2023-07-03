@@ -13,8 +13,14 @@ This game was my first independent programming project done during my freshman y
 My honors contract for CSE205: Object-Oriented Programming and Data Structures, It's the classic vertical four-in-a-row game.
 Our class had just started to work with GUI based projects, so I decided to make a game. The project is implemented in Java and uses the Java Swing toolkit for the GUI elements.
 
+## Raccounting
+Ignore this, I just wanted to play with Cobol.
+
 ## Tic-Tac-Toe
 I wanted to experiment using Rust so I made a simple Tic-Tac-Toe game.
 
 ## Sudoku
 Some solutions to a few textbook problems regarding variants of Sudoku, they are all implemented in Clingo with examples.
+
+## Misc-Algorithms
+A folder for some miscellaneous implementations of algorithms, mainly for if I want to see how something works alone.
