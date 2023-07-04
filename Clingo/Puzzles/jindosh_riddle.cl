@@ -1,4 +1,4 @@
-% All of the characteristics.
+% All details from the story to generate our answer space.
 name(winslow; marcolla; contee; natsiou; finch).
 color(white; green; purple; red; blue).
 drink(whiskey; absinthe; wine; rum; beer).
@@ -6,7 +6,7 @@ chair(1..5).
 country(dunwall; dabokva; baleton; karnaca; fraeport).
 trinket(birdpendant; ring; snufftin; diamond; medal).
 
-% Create distinct sets of characteristics, no one can share any.
+% Create distinct sets of characteristics, no one can share any individual one.
 1 {details(A,B,C,D,E,F) : color(B), drink(C), chair(D), country(E), trinket(F)} 1 :- name(A).
 1 {details(A,B,C,D,E,F) : name(A), drink(C), chair(D), country(E), trinket(F)} 1 :- color(B).
 1 {details(A,B,C,D,E,F) : name(A), color(B), chair(D), country(E), trinket(F)} 1 :- drink(C).

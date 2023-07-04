@@ -20,7 +20,7 @@ Ignore this, I just wanted to play with Cobol.
 I wanted to experiment using Rust so I made a simple Tic-Tac-Toe game.
 
 ## Clingo
-Some various clingo programs for puzzles.
+Some various Clingo programs.
 
 ## Misc-Algorithms
 A folder for some miscellaneous implementations of algorithms, mainly for if I want to see how something works alone.
