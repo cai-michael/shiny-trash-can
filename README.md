@@ -19,8 +19,8 @@ Ignore this, I just wanted to play with Cobol.
 ## Tic-Tac-Toe
 I wanted to experiment using Rust so I made a simple Tic-Tac-Toe game.
 
-## Sudoku
-Some solutions to a few textbook problems regarding variants of Sudoku, they are all implemented in Clingo with examples.
+## Clingo
+Some various clingo programs for puzzles.
 
 ## Misc-Algorithms
 A folder for some miscellaneous implementations of algorithms, mainly for if I want to see how something works alone.
