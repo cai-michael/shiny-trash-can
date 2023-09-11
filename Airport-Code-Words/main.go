@@ -17,15 +17,15 @@ type TripleTuple struct {
 }
 
 func main() {
-	// dictionaryURL := "https://raw.githubusercontent.com/zeisler/scrabble/master/db/dictionary.csv"
-	// airportCodeURL := "https://raw.githubusercontent.com/datasets/airport-codes/master/data/airport-codes.csv"
-	// dictionaryPath := download_csv(dictionaryURL)
-	// airportCodePath := download_csv(airportCodeURL)
-	// six_letter_words := filter_six_letter_words(dictionaryPath)
-	// airport_codes := get_airport_codes(airportCodePath)
+	dictionaryURL := "https://raw.githubusercontent.com/zeisler/scrabble/master/db/dictionary.csv"
+	airportCodeURL := "https://raw.githubusercontent.com/datasets/airport-codes/master/data/airport-codes.csv"
+	dictionaryPath := download_csv(dictionaryURL)
+	airportCodePath := download_csv(airportCodeURL)
+	six_letter_words := filter_six_letter_words(dictionaryPath)
+	airport_codes := get_airport_codes(airportCodePath)
 
-	six_letter_words := filter_six_letter_words("data/dictionary.csv")
-	airport_codes := get_airport_codes("data/airport-codes.csv")
+	// six_letter_words := filter_six_letter_words("data/dictionary.csv")
+	// airport_codes := get_airport_codes("data/airport-codes.csv")
 
 	find_combinations(six_letter_words, airport_codes)
 
@@ -160,7 +160,7 @@ func find_combinations(six_letter_words []string, airport_codes []string) {
 		for _, code_two := range airport_codes {
 			concatenated_code := code_one + code_two
 			for _, word := range six_letter_words {
-				if concatenated_code == word {
+				if strings.EqualFold(concatenated_code, word) {
 					created_words = append(created_words, TripleTuple{concatenated_code, code_one, code_two})
 				}
 			}
