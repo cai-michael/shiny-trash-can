@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"encoding/csv"
 	"fmt"
 	"io"
@@ -15,19 +16,29 @@ import (
 type TripleTuple struct {
 	a, b, c interface{}
 }
+type QuadTuple struct {
+	a, b, c, d interface{}
+}
+type QuintTuple struct {
+	a, b, c, d, e interface{}
+}
 
 func main() {
 	dictionaryURL := "https://raw.githubusercontent.com/zeisler/scrabble/master/db/dictionary.csv"
 	airportCodeURL := "https://raw.githubusercontent.com/datasets/airport-codes/master/data/airport-codes.csv"
 	dictionaryPath := download_csv(dictionaryURL)
 	airportCodePath := download_csv(airportCodeURL)
-	six_letter_words := filter_six_letter_words(dictionaryPath)
+	six_letter_words := filter_x_letter_words(dictionaryPath, 6)
+	nine_letter_words := filter_x_letter_words(dictionaryPath, 9)
+	twelve_letter_words := filter_x_letter_words(dictionaryPath, 12)
 	airport_codes := get_airport_codes(airportCodePath)
 
-	// six_letter_words := filter_six_letter_words("data/dictionary.csv")
-	// airport_codes := get_airport_codes("data/airport-codes.csv")
+	//six_letter_words := filter_x_letter_words("data/dictionary.csv", 6)
+	//nine_letter_words := filter_x_letter_words("data/dictionary.csv", 9)
+	//twelve_letter_words := filter_x_letter_words("data/dictionary.csv", 12)
+	//airport_codes := get_airport_codes("data/airport-codes.csv")
 
-	find_combinations(six_letter_words, airport_codes)
+	find_combinations_brute_force(six_letter_words, nine_letter_words, twelve_letter_words, airport_codes)
 
 }
 
@@ -78,7 +89,7 @@ func download_csv(fileURL string) string {
 	return fullPath
 }
 
-func filter_six_letter_words(filePath string) []string {
+func filter_x_letter_words(filePath string, x int) []string {
 	file, err := os.Open(filePath)
 
 	if err != nil {
@@ -95,7 +106,7 @@ func filter_six_letter_words(filePath string) []string {
 
 	six_letter_words := []string{}
 	for _, eachrecord := range records {
-		if len(eachrecord[0]) == 6 {
+		if len(eachrecord[0]) == x {
 			six_letter_words = append(six_letter_words, eachrecord[0])
 		}
 	}
@@ -154,20 +165,76 @@ func get_airport_codes(filePath string) []string {
 	return airport_codes
 }
 
-func find_combinations(six_letter_words []string, airport_codes []string) {
-	created_words := []TripleTuple{}
+func find_combinations_brute_force(six_letter_words []string, nine_letter_words []string, twelve_letter_words []string, airport_codes []string) {
+	created_six_letter_words := []TripleTuple{}
+	created_nine_letter_words := []QuadTuple{}
+	created_twelve_letter_words := []QuintTuple{}
 	for _, code_one := range airport_codes {
 		for _, code_two := range airport_codes {
-			concatenated_code := code_one + code_two
+			concatenated_code_one := code_one + code_two
 			for _, word := range six_letter_words {
-				if strings.EqualFold(concatenated_code, word) {
-					created_words = append(created_words, TripleTuple{concatenated_code, code_one, code_two})
+				if strings.EqualFold(concatenated_code_one, word) {
+					created_six_letter_words = append(created_six_letter_words, TripleTuple{concatenated_code_one, code_one, code_two})
+				}
+			}
+			for _, code_three := range airport_codes {
+				concatenated_code_two := concatenated_code_one + code_three
+				for _, word := range nine_letter_words {
+					if strings.EqualFold(concatenated_code_two, word) {
+						created_nine_letter_words = append(created_nine_letter_words, QuadTuple{concatenated_code_two, code_one, code_two, code_three})
+					}
+				}
+
+				for _, code_four := range airport_codes {
+					concatenated_code_three := concatenated_code_two + code_four
+					for _, word := range twelve_letter_words {
+						if strings.EqualFold(concatenated_code_three, word) {
+							created_twelve_letter_words = append(created_twelve_letter_words, QuintTuple{concatenated_code_three, code_one, code_two, code_three, code_four})
+						}
+					}
+
 				}
 			}
 		}
 	}
 
-	for _, tuple := range created_words {
+	to_write_six := []string{}
+	to_write_nine := []string{}
+	to_write_twelve := []string{}
+
+	for _, tuple := range created_six_letter_words {
+		combination_code := fmt.Sprintf("%s + %s = %s\n", tuple.b, tuple.c, tuple.a)
+		to_write_six = append(to_write_six, combination_code)
 		fmt.Printf("%s + %s = %s\n", tuple.b, tuple.c, tuple.a)
 	}
+	writeLines(to_write_six, "data/results_6.txt")
+
+	for _, tuple := range created_nine_letter_words {
+		combination_code := fmt.Sprintf("%s + %s + %s = %s\n", tuple.b, tuple.c, tuple.d, tuple.a)
+		to_write_nine = append(to_write_nine, combination_code)
+		fmt.Printf("%s + %s + %s = %s\n", tuple.b, tuple.c, tuple.d, tuple.a)
+	}
+	writeLines(to_write_six, "data/results_9.txt")
+
+	for _, tuple := range created_twelve_letter_words {
+		combination_code := fmt.Sprintf("%s + %s + %s + %s = %s\n", tuple.b, tuple.c, tuple.d, tuple.e, tuple.a)
+		to_write_twelve = append(to_write_twelve, combination_code)
+		fmt.Printf("%s + %s + %s + %s = %s\n", tuple.b, tuple.c, tuple.d, tuple.e, tuple.a)
+	}
+	writeLines(to_write_six, "data/results_12.txt")
+}
+
+func writeLines(lines []string, path string) error {
+	file, err := os.Create(path)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	w := bufio.NewWriter(file)
+	for _, line := range lines {
+		fmt.Fprintln(w, line)
+	}
+
+	return w.Flush()
 }
