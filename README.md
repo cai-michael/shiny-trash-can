@@ -2,6 +2,9 @@
 
 This repository is a variety of projects I've worked on with no real connection. I mainly use this repository to experiment with and learn new programming languages.
 
+## Airport-Code-Words
+A friend asked me how many words you can create from three letter airport codes, there's an article about it but it was pretty succinct and didn't give the full list. I wanted to make a program to pull down a current list of the codes and words.
+
 ## Lying-Number-Guessing-Game
 A friend gave me an idea for a guessing game that would occasionally lie to you, he said he had an idea for a solver but it turns out he lied. So I made a really basic naive implementation of one too.
 
