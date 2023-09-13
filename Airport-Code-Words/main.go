@@ -10,6 +10,7 @@ import (
 	"net/url"
 	"os"
 	"regexp"
+	"slices"
 	"strings"
 )
 
@@ -18,19 +19,19 @@ type QuintTuple struct {
 }
 
 func main() {
-	// dictionaryURL := "https://raw.githubusercontent.com/zeisler/scrabble/master/db/dictionary.csv"
-	// airportCodeURL := "https://raw.githubusercontent.com/datasets/airport-codes/master/data/airport-codes.csv"
-	// dictionaryPath := download_csv(dictionaryURL)
-	// airportCodePath := download_csv(airportCodeURL)
-	// six_letter_words := filter_x_letter_words(dictionaryPath, 6)
-	// nine_letter_words := filter_x_letter_words(dictionaryPath, 9)
-	// twelve_letter_words := filter_x_letter_words(dictionaryPath, 12)
-	// airport_codes := get_airport_codes(airportCodePath)
+	dictionaryURL := "https://raw.githubusercontent.com/zeisler/scrabble/master/db/dictionary.csv"
+	airportCodeURL := "https://raw.githubusercontent.com/datasets/airport-codes/master/data/airport-codes.csv"
+	dictionaryPath := download_csv(dictionaryURL)
+	airportCodePath := download_csv(airportCodeURL)
+	six_letter_words := filter_x_letter_words(dictionaryPath, 6)
+	nine_letter_words := filter_x_letter_words(dictionaryPath, 9)
+	twelve_letter_words := filter_x_letter_words(dictionaryPath, 12)
+	airport_codes := get_airport_codes(airportCodePath)
 
-	six_letter_words := filter_x_letter_words("data/dictionary.csv", 6)
-	nine_letter_words := filter_x_letter_words("data/dictionary.csv", 9)
-	twelve_letter_words := filter_x_letter_words("data/dictionary.csv", 12)
-	airport_codes := get_airport_codes("data/airport-codes.csv")
+	// six_letter_words := filter_x_letter_words("data/dictionary.csv", 6)
+	// nine_letter_words := filter_x_letter_words("data/dictionary.csv", 9)
+	// twelve_letter_words := filter_x_letter_words("data/dictionary.csv", 12)
+	// airport_codes := get_airport_codes("data/airport-codes.csv")
 
 	// find_combinations_brute_force(six_letter_words, nine_letter_words, twelve_letter_words, airport_codes)
 	find_combinations_prefixing(six_letter_words, nine_letter_words, twelve_letter_words, airport_codes)
@@ -131,10 +132,13 @@ func get_airport_codes(filePath string) []string {
 	}
 
 	local_code_index := -1
+	airport_type_index := -1
 	for column := range records[0] {
 		if records[0][column] == "local_code" {
 			local_code_index = column
-			break
+		}
+		if records[0][column] == "type" {
+			airport_type_index = column
 		}
 	}
 
@@ -142,11 +146,18 @@ func get_airport_codes(filePath string) []string {
 		log.Fatal("Could not find column for local airport code")
 	}
 
+	if airport_type_index == -1 {
+		log.Fatal("Could not find column for airport type")
+	}
+
 	r := regexp.MustCompile("^[[:alpha:]][[:alpha:]][[:alpha:]]$")
 
+	allowed_airport_types := []string{"large_airport", "medium_airport"}
 	airport_codes := []string{}
 	for _, eachrecord := range records[1:] {
-		if r.Match([]byte(eachrecord[local_code_index])) {
+		three_letter_code := r.Match([]byte(eachrecord[local_code_index]))
+		allowed_airport_type := slices.Contains(allowed_airport_types, eachrecord[airport_type_index])
+		if three_letter_code && allowed_airport_type {
 			airport_codes = append(airport_codes, eachrecord[local_code_index])
 		}
 	}
